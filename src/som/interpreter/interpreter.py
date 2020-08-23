@@ -32,8 +32,9 @@ class Interpreter(object):
     def _do_push_local(self, bytecode_index, frame, method):
         # Handle the push local bytecode
         frame.push(
-            frame.get_local(method.get_bytecode(bytecode_index + 1),
-            method.get_bytecode(bytecode_index + 2)))
+            frame.get_local(
+                method.get_bytecode(bytecode_index + 1),
+                method.get_bytecode(bytecode_index + 2)))
 
     def _do_push_argument(self, bytecode_index, frame, method):
         # Handle the push argument bytecode
