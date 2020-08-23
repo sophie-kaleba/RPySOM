@@ -1,5 +1,6 @@
 from rpython.rlib import jit
 
+
 # Frame layout:
 #
 # +-----------------+
