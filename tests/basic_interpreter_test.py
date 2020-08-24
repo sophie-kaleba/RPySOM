@@ -1,10 +1,15 @@
 import unittest
+import sys
 from parameterized import parameterized
+
+from som.compiler.parser import ParseError
 
 from som.vm.universe       import Universe
 
-from som.vmobjects.integer import Integer
 from som.vmobjects.clazz   import Class
+from som.vmobjects.double  import Double
+from som.vmobjects.integer import Integer
+from som.vmobjects.symbol  import Symbol
 
 
 class BasicInterpreterTest(unittest.TestCase):
@@ -45,14 +50,24 @@ class BasicInterpreterTest(unittest.TestCase):
                               actual_result.get_embedded_integer())
             return
 
-        if result_type is Class:
+        if result_type is Double:
             self.assertEquals(expected_result,
-                              actual_result.get_name().get_string())
+                              actual_result.get_embedded_double())
             return
 
-        self.fail("SOM Value handler missing")
+        if result_type is Class:
+            self.assertEquals(expected_result,
+                              actual_result.get_name().get_embedded_string())
+            return
 
-import sys
+        if result_type is Symbol:
+            self.assertEquals(expected_result,
+                              actual_result.get_embedded_string())
+            return
+
+        self.fail("SOM Value handler missing: " + str(result_type))
+
+
 if sys.modules.has_key('pytest'):
     # hack to make pytest not to collect the unexpanded test method
     delattr(BasicInterpreterTest, "test_basic_interpreter_behavior")
